@@ -8,10 +8,12 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed = 5f;
     private Rigidbody2D rigidBody;
     private bool isJumping;
+    public Animator anim;
 
     private void Start()
     {
         rigidBody = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
 
     private void Update()
@@ -20,6 +22,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetButtonDown("Jump") && !isJumping)
         {
+            anim.SetBool("jumping",true);
             rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpForce);
             isJumping = true;
         }
