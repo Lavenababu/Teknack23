@@ -1,10 +1,13 @@
 using UnityEngine;
+using System.Collections;
+
 
 public class PlayerMovement : MonoBehaviour
 {
     public float jumpForce = 10f;
     public float moveSpeed = 5f;
     private Rigidbody2D rigidBody;
+    private bool isJumping;
 
     private void Start()
     {
@@ -15,21 +18,17 @@ public class PlayerMovement : MonoBehaviour
     {
         rigidBody.velocity = new Vector2(moveSpeed, rigidBody.velocity.y);
 
-        if (Input.GetButtonDown("Jump") && IsGrounded())
+        if (Input.GetButtonDown("Jump") && !isJumping)
         {
             rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpForce);
+            isJumping = true;
         }
     }
 
-    private bool IsGrounded()
-    {
-    //     Vector2 position = transform.position;
-    //     Vector2 direction = Vector2.down;
-    //     float distance = 0.5f;
-
-    //     RaycastHit2D hit = Physics2D.BoxCast(position, new Vector2(0.5f, 0.5f), 0f, direction, distance, LayerMask.GetMask("Ground"));
-
-    //     return hit.collider != null;
-        return Physics2D.Raycast(transform.position, Vector2.down, 0.5f);
+    void OnCollisionEnter2D(Collision2D other){
+        if(other.gameObject.CompareTag("Ground"))
+        {
+            isJumping = false;
+        }
     }
 }
